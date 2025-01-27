@@ -669,7 +669,12 @@
       "minzoom": 14.5,
       "paint": {
         "fill-extrusion-color": "#DFDFDF",
-        "fill-extrusion-height": 20,
+        "fill-extrusion-height": [
+          "case",
+          ["has", "height"],
+          ["to-number", ["get", "height"]],
+          10
+        ],
         "fill-extrusion-base": 0,
         "fill-extrusion-opacity": 0.8
       }
