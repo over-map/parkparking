@@ -124,7 +124,7 @@
         ["in", "kind", "park", "village_green", "recreation_ground"]
       ],
       "paint": {
-        "fill-color": "#6C9A8B",
+        "fill-color": "#EDEDED",
         "fill-opacity": {"stops": [[11, 0], [12, 0.4]]}
       }
     },
@@ -135,7 +135,7 @@
       "source-layer": "land",
       "filter": ["all", ["in", "kind", "allotments", "garden"]],
       "paint": {
-        "fill-color": "#6C9A8B",
+        "fill-color": "#E9E9E9",
         "fill-opacity": {"stops": [[11, 0], [12, 0.4]]}
       }
     },
@@ -176,7 +176,7 @@
       "source-layer": "land",
       "filter": ["all", ["in", "kind", "forest"]],
       "paint": {
-        "fill-color": "#6C9A8B",
+        "fill-color": "#EDEDED",
         "fill-opacity": {"stops": [[7, 0], [8, 0.3]]}
       }
     },
@@ -201,7 +201,7 @@
       "source-layer": "land",
       "filter": ["all", ["in", "kind", "heath", "scrub"]],
       "paint": {
-        "fill-color": "#6C9A8B",
+        "fill-color": "#E3E3E3",
         "fill-opacity": {"stops": [[11, 0], [12, 0.4]]}
       }
     },
@@ -226,7 +226,7 @@
       "type": "fill",
       "source": "parkings",
       "paint": {
-        "fill-color": "#FFD3B6", 
+        "fill-color": "#CC1E1C", 
         "fill-opacity": 1
       }
     },
