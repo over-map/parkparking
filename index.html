@@ -46,6 +46,71 @@
         [13.761, 52.675], 
       ];
 
+      const buildingSource = {
+        "type": "vector",
+        "url": "pmtiles://https://overturemaps-tiles-us-west-2-beta.s3.amazonaws.com/2024-12-18/buildings.pmtiles"
+      };
+
+      const buildingLayers = [
+        {
+          "id": "building-overture",
+          "type": "fill-extrusion",
+          "source": "overture-buildings",
+          "source-layer": "building",
+          "filter": [
+            "all",
+            [">=", ["get", "longitude"], 13.0884],
+            ["<=", ["get", "longitude"], 13.7611],
+            [">=", ["get", "latitude"], 52.3383],
+            ["<=", ["get", "latitude"], 52.6755]
+          ],
+          "minzoom": 14.5,
+          "paint": {
+            "fill-extrusion-color": "#B2D052",
+            "fill-extrusion-height": [
+              "case",
+              ["==", ["get", "is_underground"], true], 0,
+              ["==", ["coalesce", ["get", "height"], ["get", "num_floors"]], null], 3,
+              ["coalesce", ["get", "height"], ["*", ["get", "num_floors"], 3], 3]
+            ],
+            "fill-extrusion-base": ["get", "min_height"],
+            "fill-extrusion-opacity": {"stops": [[14, 0], [15, 0.9]]}
+          }
+        },
+        {
+          "id": "building-part-overture",
+          "type": "fill-extrusion",
+          "source": "overture-buildings",
+          "source-layer": "building_part",
+          "filter": [
+            "all",
+            [">=", ["get", "longitude"], 13.0884],
+            ["<=", ["get", "longitude"], 13.7611],
+            [">=", ["get", "latitude"], 52.3383],
+            ["<=", ["get", "latitude"], 52.6755]
+          ],
+          "minzoom": 14.5,
+          "paint": {
+            "fill-extrusion-color": "#B2D052",
+            "fill-extrusion-height": [
+              "case",
+              ["==", ["get", "is_underground"], true], 0,
+              ["==", ["coalesce", ["get", "height"], ["get", "num_floors"]], null], 3,
+              ["coalesce", ["get", "height"], ["*", ["get", "num_floors"], 3], 3]
+            ],
+            "fill-extrusion-base": ["get", "min_height"],
+            "fill-extrusion-opacity": {"stops": [[14, 0], [15, 0.9]]}
+          }
+        }
+      ];
+
+      function addBuildingLayers(map) {
+        map.addSource("overture-buildings", buildingSource);
+        buildingLayers.forEach(layer => {
+          map.addLayer(layer);
+        });
+      }
+
       var beforeMap = new maplibregl.Map({
         container: "before",
         style: "https://over-map.github.io/parkparking/public/styles/parks.json",
@@ -53,24 +118,27 @@
         zoom: 12,
         minZoom: 12,  
         maxZoom: 22,  
-        maxBounds: berlinBounds, 
+        maxBounds: berlinBounds,
         transformRequest: (url, resourceType) => {
-        if (url.includes('protomaps.com')) {
+          if (url.includes('protomaps.com')) {
             return {
-                url: 'data:,',
-                headers: {},
-                credentials: 'omit'
+              url: 'data:,',
+              headers: {},
+              credentials: 'omit'
             };
-        }
-        
-        if (url.startsWith('pmtiles://')) {
+          }
+          if (url.startsWith('pmtiles://')) {
             return {
-                url: url.replace('pmtiles://', ''),
-                credentials: 'omit'
+              url: url.replace('pmtiles://', ''),
+              credentials: 'omit'
             };
+          }
+          return { url };
         }
-        return { url };
-        }
+      });
+
+      beforeMap.on("load", () => {
+        addBuildingLayers(beforeMap);
       });
 
       var afterMap = new maplibregl.Map({
@@ -82,22 +150,25 @@
         maxZoom: 22,  
         maxBounds: berlinBounds,
         transformRequest: (url, resourceType) => {
-        if (url.includes('protomaps.com')) {
+          if (url.includes('protomaps.com')) {
             return {
-                url: 'data:,',
-                headers: {},
-                credentials: 'omit'
+              url: 'data:,',
+              headers: {},
+              credentials: 'omit'
             };
-        }
-        
-        if (url.startsWith('pmtiles://')) {
+          }
+          if (url.startsWith('pmtiles://')) {
             return {
-                url: url.replace('pmtiles://', ''),
-                credentials: 'omit'
+              url: url.replace('pmtiles://', ''),
+              credentials: 'omit'
             };
+          }
+          return { url };
         }
-        return { url };
-        }
+      });
+
+      afterMap.on("load", () => {
+        addBuildingLayers(afterMap);
       });
 
       var container = "#comparison-container";
