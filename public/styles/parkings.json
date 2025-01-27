@@ -670,6 +670,13 @@
       "type": "fill-extrusion",
       "source": "overture-buildings",
       "source-layer": "building",
+      "filter": [
+        "all",
+        [">=", ["get", "longitude"], 13.0884],
+        ["<=", ["get", "longitude"], 13.7611],
+        [">=", ["get", "latitude"], 52.3383],
+        ["<=", ["get", "latitude"], 52.6755]
+      ],
       "minzoom": 14.5,
       "paint": {
           "fill-extrusion-color": "#B2D052",
@@ -688,6 +695,13 @@
       "type": "fill-extrusion",
       "source": "overture-buildings",
       "source-layer": "building_part",
+      "filter": [
+        "all",
+        [">=", ["get", "longitude"], 13.0884],
+        ["<=", ["get", "longitude"], 13.7611],
+        [">=", ["get", "latitude"], 52.3383],
+        ["<=", ["get", "latitude"], 52.6755]
+      ],
       "minzoom": 14.5,
       "paint": {
           "fill-extrusion-color": "#B2D052",
