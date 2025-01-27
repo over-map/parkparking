@@ -7,8 +7,9 @@
     <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
     <script src="./dist/maplibre-gl-compare.js"></script>
+    <script src="https://unpkg.com/pmtiles@2.11.0/dist/index.js"></script>
     <link rel="stylesheet" href="./dist/maplibre-gl-compare.css" />
-    <link rel="icon" href="https://over-map.github.io/styles_selector/public/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://over-map.github.io/parkparking/public/favicon.ico" type="image/x-icon">
     <style>
       body {
         margin: 0;
@@ -29,10 +30,20 @@
       <div id="after" class="map"></div>
     </div>
     <script>
-      // Define Berlin's bounding box (longitude, latitude)
+      const protocol = new pmtiles.Protocol();
+
+      maplibregl.addProtocol("pmtiles", async (params, callback) => {
+        try {
+          const response = await protocol.tile(params);
+          callback(null, response, null, null);
+        } catch (e) {
+          callback(null, { data: new Uint8Array() });
+        }
+      });
+
       const berlinBounds = [
-        [13.088, 52.338], // Southwest corner (minLon, minLat)
-        [13.761, 52.675], // Northeast corner (maxLon, maxLat)
+        [13.088, 52.338], 
+        [13.761, 52.675], 
       ];
 
       var beforeMap = new maplibregl.Map({
@@ -40,9 +51,26 @@
         style: "https://over-map.github.io/parkparking/public/styles/parks.json",
         center: [13.405, 52.52],
         zoom: 12,
-        minZoom: 12,  // Set minimum zoom level
-        maxZoom: 22,  // Set maximum zoom level
-        maxBounds: berlinBounds, // Set bounds to restrict panning
+        minZoom: 12,  
+        maxZoom: 22,  
+        maxBounds: berlinBounds, 
+        transformRequest: (url, resourceType) => {
+        if (url.includes('protomaps.com')) {
+            return {
+                url: 'data:,',
+                headers: {},
+                credentials: 'omit'
+            };
+        }
+        
+        if (url.startsWith('pmtiles://')) {
+            return {
+                url: url.replace('pmtiles://', ''),
+                credentials: 'omit'
+            };
+        }
+        return { url };
+        }
       });
 
       var afterMap = new maplibregl.Map({
@@ -50,9 +78,26 @@
         style: "https://over-map.github.io/parkparking/public/styles/parkings.json",
         center: [13.405, 52.52],
         zoom: 12,
-        minZoom: 12,  // Set minimum zoom level
-        maxZoom: 22,  // Set maximum zoom level
-        maxBounds: berlinBounds, // Set bounds to restrict panning
+        minZoom: 12,  
+        maxZoom: 22,  
+        maxBounds: berlinBounds,
+        transformRequest: (url, resourceType) => {
+        if (url.includes('protomaps.com')) {
+            return {
+                url: 'data:,',
+                headers: {},
+                credentials: 'omit'
+            };
+        }
+        
+        if (url.startsWith('pmtiles://')) {
+            return {
+                url: url.replace('pmtiles://', ''),
+                credentials: 'omit'
+            };
+        }
+        return { url };
+        }
       });
 
       var container = "#comparison-container";
