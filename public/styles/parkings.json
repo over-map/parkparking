@@ -668,24 +668,9 @@
       "source-layer": "buildings",
       "minzoom": 14.5,
       "paint": {
-        "fill-extrusion-color": [
-          "case",
-          ["has", "color"], 
-          ["get", "color"],
-          "#DFDFDF"
-        ],
-        "fill-extrusion-height": [
-          "case",
-          ["has", "height"], 
-          ["to-number", ["get", "height"]],
-          0
-        ],
-        "fill-extrusion-base": [
-          "case",
-          ["has", "min_height"],
-          ["to-number", ["get", "min_height"]],
-          0
-        ],
+        "fill-extrusion-color": "#DFDFDF",
+        "fill-extrusion-height": 20,
+        "fill-extrusion-base": 0,
         "fill-extrusion-opacity": 0.8
       }
     },
