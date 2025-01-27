@@ -10,13 +10,9 @@
       "type": "vector",
       "url": "https://vector.openstreetmap.org/shortbread_v1/tilejson.json"
     },
-    "parking-inner": {
+    "parkings": {
       "type": "geojson",
-      "data": "https://gdi.berlin.de/services/wfs/parkplaetze?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&TYPENAME=Strassenparkplaetze_innerhalb_des_Berliner_S-Bahnringes&OUTPUTFORMAT=application/json"
-    },
-    "parking-outer": {
-      "type": "geojson",
-      "data": "https://gdi.berlin.de/services/wfs/parkplaetze?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&TYPENAME=Strassenparkplaetze_ausserhalb_des_Berliner_S-Bahnringes&OUTPUTFORMAT=application/json"
+      "data": "https://over-map.github.io/parkparking/public/geojson/belinstreetparking.geojson"
     }
   },
   "sprite": "https://over-map.github.io/parkparking/public/sprites/sprites",
@@ -239,15 +235,9 @@
       "paint": {"fill-color": "#78A49B", "fill-opacity": 0.4}
     },
     {
-      "id": "parking-inner",
+      "id": "parkings",
       "type": "fill",
-      "source": "parking-inner",
-      "paint": {"fill-color": "#E8998D", "fill-opacity": 0.8}
-    },
-    {
-      "id": "parking-outer",
-      "type": "fill",
-      "source": "parking-outer",
+      "source": "parkings",
       "paint": {"fill-color": "#FFD3B6", "fill-opacity": 0.8}
     },
     {

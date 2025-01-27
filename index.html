@@ -3,18 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <title>Swipe between maps</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="../.env"></script>
     <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="./dist/maplibre-gl-compare.js"></script>
-    <link rel="stylesheet" href="./dist/maplibre-gl-compare.css" />
+    <link
+      href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css"
+      rel="stylesheet"
+    />
     <style>
       body {
         margin: 0;
         padding: 0;
-        overflow: hidden;
       }
-      .map {
+
+      #map {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -22,7 +27,30 @@
       }
     </style>
   </head>
+
   <body>
+    <style>
+      body {
+        overflow: hidden;
+      }
+
+      body * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+    <script src="maplibre-gl-compare.js"></script>
+    <link rel="stylesheet" href="maplibre-gl-compare.css" type="text/css" />
     <div id="comparison-container">
       <div id="before" class="map"></div>
       <div id="after" class="map"></div>
@@ -30,23 +58,24 @@
     <script>
       var beforeMap = new maplibregl.Map({
         container: "before",
-        style: "https://over-map.github.io/parkparking/public/styles/parks.json",
+        style: "https://over-map.github.io/parkparking/public/styles/style.json",
         center: [7.221275, 50.326111],
-        zoom: 12,
+        zoom: 5,
       });
 
       var afterMap = new maplibregl.Map({
         container: "after",
-        style: "https://over-map.github.io/parkparking/public/styles/parkings.json",
+        style: "https://over-map.github.io/styles_selector/public/styles/soft_sunrise.json",
         center: [7.221275, 50.326111],
-        zoom: 12,
+        zoom: 5,
       });
 
+      // A selector or reference to HTML element
       var container = "#comparison-container";
 
       var map = new maplibregl.Compare(beforeMap, afterMap, container, {
-        // Enable comparing two maps by mouse movement
-        // mousemove: true
+        // Set this to enable comparing two maps by mouse movement:
+        // m ousemove: true
       });
     </script>
   </body>
