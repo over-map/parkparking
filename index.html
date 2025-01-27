@@ -21,33 +21,36 @@
         width: 100%;
       }
       
-      /* Custom style for red arrows without background circle */
+      /* Remove the default blue circle background and set red for the arrows */
       .maplibregl-compare-arrow {
-        background-color: transparent !important; /* Remove the blue background */
-        border-radius: 0 !important; /* Remove the circular background */
-        width: 40px !important; /* Set the width of the arrow */
-        height: 40px !important; /* Set the height of the arrow */
-        border: 2px solid #4E76B1 !important; /* Red border for the arrow */
+        background-color: transparent !important;  /* Remove background circle */
+        border: 2px solid red !important;          /* Red border for arrows */
+        width: 35px !important;                    /* Width of the arrow */
+        height: 35px !important;                   /* Height of the arrow */
+        border-radius: 0 !important;               /* Remove circular background */
       }
 
-      /* Remove the circular background */
-      .maplibregl-compare-arrow:before {
-        content: none !important; /* Remove the content (circle) */
+      /* Remove the default circle background around the arrows */
+      .maplibregl-compare-arrow-left,
+      .maplibregl-compare-arrow-right {
+        background-color: transparent !important;  /* Remove blue circle */
+        border: 2px solid red !important;          /* Red border for arrows */
+        width: 35px !important;                    /* Width of the arrow */
+        height: 35px !important;                   /* Height of the arrow */
+        border-radius: 0 !important;               /* Remove the rounded edges */
       }
 
-      /* Style for the arrows */
-      .maplibregl-compare-arrow:after {
-        color: #4E76B1 !important; /* Change the arrow color to red */
-        font-size: 24px !important; /* Adjust the size of the arrows */
+      /* Override the arrows themselves to be red */
+      .maplibregl-compare-arrow-left:after,
+      .maplibregl-compare-arrow-right:after {
+        color: red !important;  /* Set arrow color to red */
+        font-size: 24px !important; /* Size of the arrows */
       }
 
-      /* Additional styles to remove any default styling of the circle around the arrows */
-      .maplibregl-compare-arrow.maplibregl-compare-arrow-left,
-      .maplibregl-compare-arrow.maplibregl-compare-arrow-right {
-        background-color: transparent !important; /* Remove background */
-        border: 2px solid #4E76B1 !important; /* Red border for arrows */
-        width: 40px !important; /* Width of the arrows */
-        height: 40px !important; /* Height of the arrows */
+      /* Fix for hiding any existing background circle styles */
+      .maplibregl-compare-arrow-left:before,
+      .maplibregl-compare-arrow-right:before {
+        content: none !important; /* Remove the circle background */
       }
     </style>
   </head>
