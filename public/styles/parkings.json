@@ -13,6 +13,10 @@
     "parkings": {
       "type": "geojson",
       "data": "https://over-map.github.io/parkparking/public/geojson/berlinstreetparking.geojson"
+    },
+    "overture-buildings": {
+      "type": "vector",
+      "url": "pmtiles://https://overturemaps-tiles-us-west-2-beta.s3.amazonaws.com/2024-12-18/buildings.pmtiles"
     }
   },
   "sprite": "https://over-map.github.io/urban_comparator/public/sprites/sprites",
@@ -659,6 +663,42 @@
         "line-color": "#D6D6D6",
         "line-opacity": {"stops": [[14, 0], [15, 0.5]]},
         "line-width": 0.5
+      }
+    },
+    {
+      "id": "building-overture",
+      "type": "fill-extrusion",
+      "source": "overture-buildings",
+      "source-layer": "building",
+      "minzoom": 14.5,
+      "paint": {
+          "fill-extrusion-color": "#BFBFBF",
+          "fill-extrusion-height": [
+              "case",
+              ["==", ["get", "is_underground"], true], 0,
+              ["==", ["coalesce", ["get", "height"], ["get", "num_floors"]], null], 3,
+              ["coalesce", ["get", "height"], ["*", ["get", "num_floors"], 3], 3]
+          ],
+          "fill-extrusion-base": ["get", "min_height"],
+          "fill-extrusion-opacity": {"stops": [[14, 0], [15, 0.9]]}
+      }
+    },
+    {
+      "id": "building-part-overture",
+      "type": "fill-extrusion",
+      "source": "overture-buildings",
+      "source-layer": "building_part",
+      "minzoom": 14.5,
+      "paint": {
+          "fill-extrusion-color": "#BFBFBF",
+          "fill-extrusion-height": [
+              "case",
+              ["==", ["get", "is_underground"], true], 0,
+              ["==", ["coalesce", ["get", "height"], ["get", "num_floors"]], null], 3,
+              ["coalesce", ["get", "height"], ["*", ["get", "num_floors"], 3], 3]
+          ],
+          "fill-extrusion-base": ["get", "min_height"],
+          "fill-extrusion-opacity": {"stops": [[14, 0], [15, 0.9]]}
       }
     },
     {
