@@ -21,12 +21,33 @@
         width: 100%;
       }
       
-      /* Custom style for red arrows */
+      /* Custom style for red arrows without background circle */
       .maplibregl-compare-arrow {
-        background-color: #4E76B1 !important;
+        background-color: transparent !important; /* Remove the blue background */
         border-radius: 0 !important; /* Remove the circular background */
-        width: 30px !important; /* Set the width of the arrow */
-        height: 30px !important; /* Set the height of the arrow */
+        width: 40px !important; /* Set the width of the arrow */
+        height: 40px !important; /* Set the height of the arrow */
+        border: 2px solid #4E76B1 !important; /* Red border for the arrow */
+      }
+
+      /* Remove the circular background */
+      .maplibregl-compare-arrow:before {
+        content: none !important; /* Remove the content (circle) */
+      }
+
+      /* Style for the arrows */
+      .maplibregl-compare-arrow:after {
+        color: #4E76B1 !important; /* Change the arrow color to red */
+        font-size: 24px !important; /* Adjust the size of the arrows */
+      }
+
+      /* Additional styles to remove any default styling of the circle around the arrows */
+      .maplibregl-compare-arrow.maplibregl-compare-arrow-left,
+      .maplibregl-compare-arrow.maplibregl-compare-arrow-right {
+        background-color: transparent !important; /* Remove background */
+        border: 2px solid #4E76B1 !important; /* Red border for arrows */
+        width: 40px !important; /* Width of the arrows */
+        height: 40px !important; /* Height of the arrows */
       }
     </style>
   </head>
