@@ -11,8 +11,8 @@
       "url": "https://vector.openstreetmap.org/shortbread_v1/tilejson.json"
     }
   },
-  "sprite": "https://over-map.github.io/urban_comparator/public/sprites/sprites",
-  "glyphs": "https://over-map.github.io/urban_comparator/public/fonts/{fontstack}/{range}.pbf",
+  "sprite": "https://over-map.github.io/parkparking/public/sprites/sprites",
+  "glyphs": "https://over-map.github.io/parkparking/public/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
@@ -5529,8 +5529,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "icon-halo-color": "#D4D4D4"
       }
@@ -5568,8 +5568,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "icon-halo-color": "#D4D4D4"
       }
@@ -5605,8 +5605,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "icon-halo-color": "#D4D4D4",
         "text-halo-color": "#D4D4D4"
       }
@@ -5692,8 +5692,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "icon-halo-color": "#D4D4D4",
         "text-halo-color": "#D4D4D4"
       }
@@ -5729,8 +5729,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "icon-halo-color": "#D4D4D4"
       }
@@ -5764,8 +5764,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "icon-halo-color": "#D4D4D4"
       }
@@ -5797,8 +5797,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "icon-halo-color": "#D4D4D4",
         "text-halo-color": "#D4D4D4"
       }
@@ -5819,8 +5819,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "icon-halo-color": "#D4D4D4",
         "text-halo-color": "#D4D4D4"
       }
@@ -5841,8 +5841,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.4]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.4]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "icon-halo-color": "#D4D4D4",
         "text-halo-color": "#D4D4D4"
       }
@@ -6665,9 +6665,9 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.7]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.7]]},
-        "text-color": "#F0F0F0",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
-        "icon-color": "#F0F0F0",
+        "icon-color": "#919191",
         "icon-halo-color": "#D4D4D4"
       }
     },
@@ -6705,8 +6705,8 @@
       "paint": {
         "icon-opacity": {"stops": [[16, 0], [17, 0.7]]},
         "text-opacity": {"stops": [[16, 0], [17, 0.7]]},
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "icon-halo-color": "#D4D4D4"
       }
@@ -6731,8 +6731,8 @@
       },
       "paint": {
         "icon-opacity": 0.7,
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "text-halo-width": 2,
         "text-halo-blur": 1,
@@ -6759,8 +6759,8 @@
       },
       "paint": {
         "icon-opacity": 0.7,
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "text-halo-width": 2,
         "text-halo-blur": 1,
@@ -6791,8 +6791,8 @@
       },
       "paint": {
         "icon-opacity": 0.7,
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "text-halo-width": 2,
         "text-halo-blur": 1,
@@ -6823,8 +6823,8 @@
       },
       "paint": {
         "icon-opacity": 0.7,
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "text-halo-width": 2,
         "text-halo-blur": 1,
@@ -6855,8 +6855,8 @@
       },
       "paint": {
         "icon-opacity": 0.7,
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "text-halo-width": 2,
         "text-halo-blur": 1,
@@ -6883,8 +6883,8 @@
       },
       "paint": {
         "icon-opacity": 0.7,
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "text-halo-width": 2,
         "text-halo-blur": 1,
@@ -6911,8 +6911,8 @@
       },
       "paint": {
         "icon-opacity": 0.7,
-        "icon-color": "#F0F0F0",
-        "text-color": "#F0F0F0",
+        "icon-color": "#919191",
+        "text-color": "#919191",
         "text-halo-color": "#D4D4D4",
         "text-halo-width": 2,
         "text-halo-blur": 1,

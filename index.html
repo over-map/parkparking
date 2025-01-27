@@ -7,7 +7,6 @@
     <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
     <script src="./dist/maplibre-gl-compare.js"></script>
-    <script src="https://unpkg.com/pmtiles@2.11.0/dist/index.js"></script>
     <link rel="stylesheet" href="./dist/maplibre-gl-compare.css" />
     <link rel="icon" href="https://over-map.github.io/parkparking/public/favicon.ico" type="image/x-icon">
     <style>
@@ -30,86 +29,10 @@
       <div id="after" class="map"></div>
     </div>
     <script>
-      const protocol = new pmtiles.Protocol();
-
-      maplibregl.addProtocol("pmtiles", async (params, callback) => {
-        try {
-          const response = await protocol.tile(params);
-          callback(null, response, null, null);
-        } catch (e) {
-          callback(null, { data: new Uint8Array() });
-        }
-      });
-
       const berlinBounds = [
         [13.088, 52.338], 
         [13.761, 52.675], 
       ];
-
-      const buildingSource = {
-        "type": "vector",
-        "url": "pmtiles://https://overturemaps-tiles-us-west-2-beta.s3.amazonaws.com/2024-12-18/buildings.pmtiles"
-      };
-
-      const buildingLayers = [
-        {
-          "id": "building-overture",
-          "type": "fill-extrusion",
-          "source": "overture-buildings",
-          "source-layer": "building",
-          "filter": [
-            "all",
-            [">=", ["get", "longitude"], 13.0884],
-            ["<=", ["get", "longitude"], 13.7611],
-            [">=", ["get", "latitude"], 52.3383],
-            ["<=", ["get", "latitude"], 52.6755]
-          ],
-          "minzoom": 14.5,
-          "paint": {
-            "fill-extrusion-color": "#B2D052",
-            "fill-extrusion-height": [
-              "case",
-              ["==", ["get", "is_underground"], true], 0,
-              ["==", ["coalesce", ["get", "height"], ["get", "num_floors"]], null], 3,
-              ["coalesce", ["get", "height"], ["*", ["get", "num_floors"], 3], 3]
-            ],
-            "fill-extrusion-base": ["get", "min_height"],
-            "fill-extrusion-opacity": {"stops": [[14, 0], [15, 0.9]]}
-          }
-        },
-        {
-          "id": "building-part-overture",
-          "type": "fill-extrusion",
-          "source": "overture-buildings",
-          "source-layer": "building_part",
-          "filter": [
-            "all",
-            [">=", ["get", "longitude"], 13.0884],
-            ["<=", ["get", "longitude"], 13.7611],
-            [">=", ["get", "latitude"], 52.3383],
-            ["<=", ["get", "latitude"], 52.6755]
-          ],
-          "minzoom": 14.5,
-          "paint": {
-            "fill-extrusion-color": "#B2D052",
-            "fill-extrusion-height": [
-              "case",
-              ["==", ["get", "is_underground"], true], 0,
-              ["==", ["coalesce", ["get", "height"], ["get", "num_floors"]], null], 3,
-              ["coalesce", ["get", "height"], ["*", ["get", "num_floors"], 3], 3]
-            ],
-            "fill-extrusion-base": ["get", "min_height"],
-            "fill-extrusion-opacity": {"stops": [[14, 0], [15, 0.9]]}
-          }
-        }
-      ];
-
-      function addBuildingLayers(map) {
-        map.addSource("overture-buildings", buildingSource);
-        buildingLayers.forEach(layer => {
-          map.addLayer(layer);
-        });
-      }
 
       var beforeMap = new maplibregl.Map({
         container: "before",
@@ -118,27 +41,7 @@
         zoom: 12,
         minZoom: 12,  
         maxZoom: 22,  
-        maxBounds: berlinBounds,
-        transformRequest: (url, resourceType) => {
-          if (url.includes('protomaps.com')) {
-            return {
-              url: 'data:,',
-              headers: {},
-              credentials: 'omit'
-            };
-          }
-          if (url.startsWith('pmtiles://')) {
-            return {
-              url: url.replace('pmtiles://', ''),
-              credentials: 'omit'
-            };
-          }
-          return { url };
-        }
-      });
-
-      beforeMap.on("load", () => {
-        addBuildingLayers(beforeMap);
+        maxBounds: berlinBounds, 
       });
 
       var afterMap = new maplibregl.Map({
@@ -146,29 +49,9 @@
         style: "https://over-map.github.io/parkparking/public/styles/parkings.json",
         center: [13.405, 52.52],
         zoom: 12,
-        minZoom: 12,  
+        minZoom: 12,
         maxZoom: 22,  
-        maxBounds: berlinBounds,
-        transformRequest: (url, resourceType) => {
-          if (url.includes('protomaps.com')) {
-            return {
-              url: 'data:,',
-              headers: {},
-              credentials: 'omit'
-            };
-          }
-          if (url.startsWith('pmtiles://')) {
-            return {
-              url: url.replace('pmtiles://', ''),
-              credentials: 'omit'
-            };
-          }
-          return { url };
-        }
-      });
-
-      afterMap.on("load", () => {
-        addBuildingLayers(afterMap);
+        maxBounds: berlinBounds, 
       });
 
       var container = "#comparison-container";
