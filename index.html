@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Swipe between maps</title>
+    <title>Berlin Parks & Parkings</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
@@ -20,6 +20,14 @@
         bottom: 0;
         width: 100%;
       }
+      
+      /* Custom style for red arrows */
+      .maplibregl-compare-arrow {
+        background-color: #4E76B1 !important;
+        border-radius: 0 !important; /* Remove the circular background */
+        width: 30px !important; /* Set the width of the arrow */
+        height: 30px !important; /* Set the height of the arrow */
+      }
     </style>
   </head>
   <body>
@@ -28,11 +36,20 @@
       <div id="after" class="map"></div>
     </div>
     <script>
+      // Define Berlin's bounding box (longitude, latitude)
+      const berlinBounds = [
+        [13.088, 52.338], // Southwest corner (minLon, minLat)
+        [13.761, 52.675], // Northeast corner (maxLon, maxLat)
+      ];
+
       var beforeMap = new maplibregl.Map({
         container: "before",
         style: "https://over-map.github.io/parkparking/public/styles/parks.json",
         center: [13.405, 52.52],
         zoom: 12,
+        minZoom: 12,  // Set minimum zoom level
+        maxZoom: 22,  // Set maximum zoom level
+        maxBounds: berlinBounds, // Set bounds to restrict panning
       });
 
       var afterMap = new maplibregl.Map({
@@ -40,6 +57,9 @@
         style: "https://over-map.github.io/parkparking/public/styles/parkings.json",
         center: [13.405, 52.52],
         zoom: 12,
+        minZoom: 12,  // Set minimum zoom level
+        maxZoom: 22,  // Set maximum zoom level
+        maxBounds: berlinBounds, // Set bounds to restrict panning
       });
 
       var container = "#comparison-container";

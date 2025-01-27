@@ -226,7 +226,7 @@
       "type": "fill",
       "source": "parkings",
       "paint": {
-        "fill-color": "#CC1E1C", 
+        "fill-color": "#AB4F5A", 
         "fill-opacity": 1
       }
     },
