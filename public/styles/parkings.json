@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "name": "style",
+  "name": "parkings",
   "metadata": {
     "maputnik:renderer": "mbgljs",
     "license": "https://creativecommons.org/publicdomain/zero/1.0/"
@@ -12,7 +12,7 @@
     },
     "parkings": {
       "type": "geojson",
-      "data": "https://over-map.github.io/parkparking/public/geojson/belinstreetparking.geojson"
+      "data": "https://over-map.github.io/parkparking/public/geojson/berlinstreetparking.geojson"
     }
   },
   "sprite": "https://over-map.github.io/parkparking/public/sprites/sprites",
