@@ -1,52 +1,246 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Berlin Parks & Parkings</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="./dist/maplibre-gl-compare.js"></script>
-    <link rel="stylesheet" href="./dist/maplibre-gl-compare.css" />
-    <link rel="icon" href="https://over-map.github.io/parkparking/public/favicon.ico" type="image/x-icon">
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-      .map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="comparison-container">
-      <div id="before" class="map"></div>
-      <div id="after" class="map"></div>
-    </div>
-    <script>
-      const berlinBounds = [
-        [13.088, 52.338], 
-        [13.761, 52.675], 
-      ];
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Berlin Space: Parks vs. Parking</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  
+  <script src="https://unpkg.com/maplibre-gl@4.1.3/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@4.1.3/dist/maplibre-gl.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background-color: #1a1a1a;
+      overscroll-behavior-y: none; 
+    }
+    
+    /* --- Loading Overlay --- */
+    #loading-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: #1a1a1a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease-in-out;
+    }
 
-      var beforeMap = new maplibregl.Map({
+    .spinner {
+      width: 40px; height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* --- Map Layout --- */
+    .map-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    
+    #top-map-wrapper {
+      clip-path: inset(0 0 50% 0);
+      z-index: 1;
+    }
+    #bottom-map-wrapper { z-index: 0; }
+
+    /* --- Minimalist Vertical Slider UI --- */
+    #vertical-slider {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px; /* Sleeker line */
+      background: #000; /* Black separator */
+      z-index: 5;
+      cursor: ns-resize;
+      transform: translateY(-50%); 
+    }
+
+    #slider-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: transparent; /* Removed the white circle */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Subtle white glow ensures black arrows are visible over dark map areas */
+      filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.8));
+    }
+
+    #slider-handle::before, #slider-handle::after {
+      content: '';
+      position: absolute;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+    }
+    #slider-handle::before { top: 4px; border-bottom: 8px solid #000; } /* Black Up Arrow */
+    #slider-handle::after { bottom: 4px; border-top: 8px solid #000; }  /* Black Down Arrow */
+
+    /* --- Floating Labels (Centered) --- */
+    .layer-badge {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .badge-top { top: 20px; }
+    .badge-bottom { bottom: 30px; }
+
+    /* --- Info Button & Modal --- */
+    #info-btn {
+      position: absolute;
+      bottom: 30px;
+      right: 20px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    #info-btn:hover { background: rgba(0, 0, 0, 0.9); }
+
+    #info-modal-backdrop {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 9998;
+      display: none; /* Hidden by default */
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #info-modal {
+      background: #fff;
+      color: #1a1a1a;
+      padding: 24px 32px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 85%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    #info-modal h2 { margin: 0 0 12px 0; font-size: 1.2rem; }
+    #info-modal p { margin: 0 0 16px 0; font-size: 0.9rem; line-height: 1.5; color: #444; }
+    #info-modal a { color: #000; font-weight: 600; text-decoration: none; border-bottom: 1px solid #ccc;}
+    
+    #close-modal-btn {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: none; border: none;
+      font-size: 1.5rem; cursor: pointer; color: #888;
+      line-height: 1;
+    }
+    #close-modal-btn:hover { color: #000; }
+  </style>
+</head>
+<body>
+
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <div>Loading Map Data...</div>
+  </div>
+
+  <div id="bottom-map-wrapper" class="map-wrapper">
+    <div id="after" class="map"></div>
+  </div>
+
+  <div id="top-map-wrapper" class="map-wrapper">
+    <div id="before" class="map"></div>
+  </div>
+
+  <div id="vertical-slider">
+    <div id="slider-handle"></div>
+  </div>
+
+  <div class="layer-badge badge-top">🌲 Parks</div>
+  <div class="layer-badge badge-bottom">🚗 Parking</div>
+
+  <button id="info-btn">i</button>
+
+  <div id="info-modal-backdrop">
+    <div id="info-modal">
+      <button id="close-modal-btn">&times;</button>
+      <h2>About this map</h2>
+      <p>This visualization compares the spatial equity in Berlin by overlaying public green spaces (parks) against land dedicated to car infrastructure (parking).</p>
+      <p><strong>Data Sources:</strong> OpenStreetMap, Berlin Geoportal.</p>
+      <p>Created by <a href="#" target="_blank">Filippo Imberti</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    const berlinBounds = [
+      [13.088, 52.338], 
+      [13.761, 52.675], 
+    ];
+
+    const baseUrl = new URL(".", window.location.href).href;
+
+    Promise.all([
+      fetch("./assets/styles/parks.json").then(res => res.json()),
+      fetch("./assets/styles/parkings.json").then(res => res.json())
+    ]).then(([parksStyle, parkingsStyle]) => {
+      
+      // Patch paths to be absolute, circumventing map engine URL resolution issues
+      parksStyle.sprite = baseUrl + "assets/sprites/sprites";
+      parksStyle.glyphs = baseUrl + "assets/fonts/{fontstack}/{range}.pbf";
+      
+      parkingsStyle.sprite = baseUrl + "assets/sprites/sprites";
+      parkingsStyle.glyphs = baseUrl + "assets/fonts/{fontstack}/{range}.pbf";
+      parkingsStyle.sources.parkings.data = baseUrl + "assets/data/berlin-street-parking.geojson";
+
+      const beforeMap = new maplibregl.Map({
         container: "before",
-        style: "https://over-map.github.io/parkparking/public/styles/parks.json",
+        style: parksStyle,
         center: [13.405, 52.52],
         zoom: 12,
         minZoom: 12,  
         maxZoom: 22,  
-        maxBounds: berlinBounds, 
+        maxBounds: berlinBounds,
+        attributionControl: false
       });
 
-      var afterMap = new maplibregl.Map({
+      const afterMap = new maplibregl.Map({
         container: "after",
-        style: "https://over-map.github.io/parkparking/public/styles/parkings.json",
+        style: parkingsStyle,
         center: [13.405, 52.52],
         zoom: 12,
         minZoom: 12,
@@ -54,12 +248,112 @@
         maxBounds: berlinBounds, 
       });
 
-      var container = "#comparison-container";
+      // ==========================================
+      // 1. Synchronized Loading Logic
+      // ==========================================
+      let parksLoaded = false;
+      let parkingsLoaded = false;
 
-      var map = new maplibregl.Compare(beforeMap, afterMap, container, {
-        // Enable comparing two maps by mouse movement
-        // mousemove: true
-      });
-    </script>
-  </body>
+      function checkMapsReady() {
+        if (parksLoaded && parkingsLoaded) {
+          const overlay = document.getElementById('loading-overlay');
+          overlay.style.opacity = '0';
+          setTimeout(() => { overlay.style.display = 'none'; }, 600);
+        }
+      }
+
+      beforeMap.once('idle', () => { parksLoaded = true; checkMapsReady(); });
+      afterMap.once('idle', () => { parkingsLoaded = true; checkMapsReady(); });
+
+      setTimeout(() => {
+        parksLoaded = true; parkingsLoaded = true; checkMapsReady();
+      }, 8000);
+
+      // ==========================================
+      // 2. Two-Way Map Synchronization
+      // ==========================================
+      let isSyncing = false;
+
+      function syncMaps(sourceMap, targetMap) {
+        sourceMap.on('move', () => {
+          if (isSyncing) return;
+          isSyncing = true;
+          targetMap.jumpTo({
+            center: sourceMap.getCenter(),
+            zoom: sourceMap.getZoom(),
+            bearing: sourceMap.getBearing(),
+            pitch: sourceMap.getPitch()
+          });
+          isSyncing = false;
+        });
+      }
+
+      syncMaps(beforeMap, afterMap);
+      syncMaps(afterMap, beforeMap);
+    });
+
+    // ==========================================
+    // 3. Custom Vertical Slider Logic
+    // ==========================================
+    const slider = document.getElementById('vertical-slider');
+    const topMapWrapper = document.getElementById('top-map-wrapper');
+    let isDragging = false;
+
+    function updateSliderPosition(clientY) {
+      const h = window.innerHeight;
+      let y = Math.max(0, Math.min(clientY, h));
+      
+      slider.style.top = y + 'px';
+      
+      const bottomInset = h - y;
+      topMapWrapper.style.clipPath = `inset(0 0 ${bottomInset}px 0)`;
+    }
+
+    slider.addEventListener('mousedown', () => { isDragging = true; });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      updateSliderPosition(e.clientY);
+    });
+
+    slider.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
+    window.addEventListener('touchend', () => { isDragging = false; });
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      updateSliderPosition(e.touches[0].clientY);
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      const currentY = parseFloat(slider.style.top) || window.innerHeight / 2;
+      updateSliderPosition(currentY);
+    });
+
+    // ==========================================
+    // 4. Modal Logic
+    // ==========================================
+    const infoBtn = document.getElementById('info-btn');
+    const modalBackdrop = document.getElementById('info-modal-backdrop');
+    const closeBtn = document.getElementById('close-modal-btn');
+
+    function openModal() {
+      modalBackdrop.style.display = 'flex';
+      // Small timeout allows CSS transition to kick in after display:flex
+      setTimeout(() => { modalBackdrop.style.opacity = '1'; }, 10);
+    }
+
+    function closeModal() {
+      modalBackdrop.style.opacity = '0';
+      setTimeout(() => { modalBackdrop.style.display = 'none'; }, 300);
+    }
+
+    infoBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    
+    // Close modal if user clicks the dark background outside the white box
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+
+  </script>
+</body>
 </html>
